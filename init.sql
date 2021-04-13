@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS Users (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `first_name` VARCHAR(255) NOT NULL,
+  `last_name` VARCHAR(255) NOT NULL, 
+  `avatar` VARCHAR(255),
+  `created_at` TIMESTAMP DEFAULT NOW(),
+  PRIMARY KEY (id)
+);
