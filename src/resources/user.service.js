@@ -109,13 +109,16 @@ class UserService {
 			if (e.gift > 0) {
 				result.gift.times++;
 				result.gift.total += e.gift;
-			} else if (e.food > 0) {
+			}
+			if (e.food > 0) {
 				result.food.times++;
 				result.food.total += e.food;
-			} else if (e.housing > 0) {
+			}
+			if (e.housing > 0) {
 				result.housing.times++;
 				result.housing.total += e.housing;
-			} else if (e.transportation > 0) {
+			}
+			if (e.transportation > 0) {
 				result.transportation.times++;
 				result.transportation.total += e.transportation;
 			}
@@ -131,14 +134,14 @@ class UserService {
 	async getOneUser(req, res) {
 		try {
 			const id = req.params.id;
-            
+
 			const data = await query(`SELECT * FROM Users WHERE id = ${id}`);
 
 			if (data.length === 0) {
 				return response(res, 404, false, null, "not found");
 			}
 
-            const firstDetail = await query(`
+			const firstDetail = await query(`
                 SELECT
                     t.category, t.amount, t.id, t.type
                 FROM
