@@ -121,7 +121,7 @@ class UserService {
 			}
 		});
 		const final = Object.keys(result).filter((g) => {
-			if (result[g].times > 7) {
+			if (result[g].times >= 7) {
 				return g;
 			}
 		});
