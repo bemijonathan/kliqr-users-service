@@ -70,13 +70,15 @@ class UserService {
 					.format("MMMM")
 			);
 		}
+		const categories = await query(`select distinct(category) from Transactions`)
+		let w = {}
+		categories.forEach(e => {
+			w[e.category] = 0
+		})
 		const twelveMonthsData = JSON.parse(
 			JSON.stringify(
 				Array(12).fill({
-					gift: 0,
-					food: 0,
-					transportation: 0,
-					housing: 0,
+					...w
 				})
 			)
 		);
@@ -88,15 +90,11 @@ class UserService {
 					return;
 				}
 			});
-			if (e.category === "gift") {
-				twelveMonthsData[x].gift++;
-			} else if (e.category === "food") {
-				twelveMonthsData[x].food++;
-			} else if (e.category === "housing") {
-				twelveMonthsData[x].housing++;
-			} else if (e.category === "transportation") {
-				twelveMonthsData[x].transportation++;
-			}
+			categories.forEach(i => {
+				if(i.category === e.category){
+					twelveMonthsData[x][i.category] ++ 
+				}
+			})
 		});
 		let result = {};
 		Object.keys(twelveMonthsData[0]).forEach((d) => {
@@ -106,22 +104,12 @@ class UserService {
 			};
 		});
 		twelveMonthsData.forEach((e) => {
-			if (e.gift > 0) {
-				result.gift.times++;
-				result.gift.total += e.gift;
-			}
-			if (e.food > 0) {
-				result.food.times++;
-				result.food.total += e.food;
-			}
-			if (e.housing > 0) {
-				result.housing.times++;
-				result.housing.total += e.housing;
-			}
-			if (e.transportation > 0) {
-				result.transportation.times++;
-				result.transportation.total += e.transportation;
-			}
+			categories.forEach(h => {
+				if(e[h.category] > 0){
+					result[h.category].total += e[h.category];
+					result[h.category].times ++
+				}
+			});
 		});
 		const final = Object.keys(result).filter((g) => {
 			if (result[g].times >= 7) {
