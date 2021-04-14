@@ -21,3 +21,7 @@ module.exports.deleteOne = async (req, res) => {
 module.exports.updateOne = async (req, res) => {
     return user_service.updateUser(req, res);
 }
+
+module.exports.getExpenseTrends = async (req, res) => {
+    return user_service.getExpenseTrends(req, res);
+}
