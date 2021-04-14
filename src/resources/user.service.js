@@ -11,6 +11,7 @@ class UserService {
                     u.id,
                     u.first_name ,
                     u.last_name ,
+					u.avatar ,
                     count(t.id) transaction,
                     u.created_at
                 from
@@ -131,7 +132,7 @@ class UserService {
 
 			const firstDetail = await query(`
                 SELECT
-                    t.category, t.amount, t.id, t.type
+                    t.category, t.amount, t.id, t.type, u.avatar
                 FROM
                     Users u
                 join Transactions t on
