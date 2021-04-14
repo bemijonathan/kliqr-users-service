@@ -24,7 +24,7 @@ class UserService {
 
 			const firstDetail = await query(`
                 SELECT
-                    t.category, t.amount, t.id, t.type
+                    t.category, t.amount, t.id, t.type, u.avatar
                 FROM
                     Users u
                 join Transactions t on
