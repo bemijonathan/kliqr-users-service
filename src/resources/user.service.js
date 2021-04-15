@@ -71,15 +71,17 @@ class UserService {
 					.format("MMMM")
 			);
 		}
-		const categories = await query(`select distinct(category) from Transactions`)
-		let w = {}
-		categories.forEach(e => {
-			w[e.category] = 0
-		})
+		const categories = await query(
+			`select distinct(category), icon_url from Transactions`
+		);
+		let w = {};
+		categories.forEach((e) => {
+			w[e.category] = 0;
+		});
 		const twelveMonthsData = JSON.parse(
 			JSON.stringify(
 				Array(12).fill({
-					...w
+					...w,
 				})
 			)
 		);
@@ -91,11 +93,11 @@ class UserService {
 					return;
 				}
 			});
-			categories.forEach(i => {
-				if(i.category === e.category){
-					twelveMonthsData[x][i.category] ++ 
+			categories.forEach((i) => {
+				if (i.category === e.category) {
+					twelveMonthsData[x][i.category]++;
 				}
-			})
+			});
 		});
 		let result = {};
 		Object.keys(twelveMonthsData[0]).forEach((d) => {
@@ -105,19 +107,30 @@ class UserService {
 			};
 		});
 		twelveMonthsData.forEach((e) => {
-			categories.forEach(h => {
-				if(e[h.category] > 0){
+			categories.forEach((h) => {
+				if (e[h.category] > 0) {
 					result[h.category].total += e[h.category];
-					result[h.category].times ++
+					result[h.category].times++;
 				}
 			});
 		});
-		const final = Object.keys(result).filter((g) => {
+		let final = Object.keys(result).filter((g) => {
 			if (result[g].times >= 7) {
 				return g;
 			}
 		});
-		return response(res, 200, true, final, "success");
+
+		let p = final.map(j => {
+			let d ;
+			categories.filter(g => {
+				if (g.category === j){
+					d = g.icon_url
+				}
+			})
+			return d
+		})
+
+		return response(res, 200, true, p, "success");
 	}
 
 	async getOneUser(req, res) {
