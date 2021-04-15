@@ -124,7 +124,7 @@ class UserService {
 			let d ;
 			categories.filter(g => {
 				if (g.category === j){
-					d = g.icon_url
+					d = g
 				}
 			})
 			return d
